@@ -1,7 +1,6 @@
 import random
 import pickle
 import os
-from IPython.display import clear_output
 
 class UNOCard:
     def __init__(self, color, value):
@@ -327,16 +326,15 @@ class UNOGameController:
       print(f"\n{winner[0][0][0]} wins!")
     
     def play_card(self, game, current_player):
-        try:
-            card_index_input=input("Enter index of card to play (or '0' to cancel): ")
-            if(card_index_input=='0'):
-                return
-            else:
-                try:
-                    card_index=int(card_index_input) - 1
-                except ValueError as e:
-                    print(e)
-                    return
+        card_index_input = int(input("Enter index of card to play (or '0' to cancel): "))
+        while 0 <= card_index_input >= len(current_player.hand):
+            print(f"{card_index_input} is an invalid input please enter the input again")
+            card_index_input=int(input("Enter index of card to play (or '0' to cancel): "))
+
+        if card_index_input == 0:
+            return 
+        else:
+            card_index=int(card_index_input) - 1
             chosen_color=None
             if current_player.hand[card_index].color=="Wild":
                 colors = ["Red", "Yellow", "Green", "Blue"]
@@ -354,8 +352,6 @@ class UNOGameController:
                 return True
             os.system('cls' if os.name == 'nt' else 'clear')
             game.next_player()
-        except Exception as e:
-            print(e)
         
 
 def play_game():
@@ -375,9 +371,11 @@ def play_game():
         if action == 'play_card':
             result=controller.play_card(game, current_player)
             if result==True:
+                game.next_player()
                 break
-            game.next_player()
-        
+            elif result is None:
+                action=controller.get_player_action(current_player)
+            
         elif action == 'draw_card':
             controller.draw_card(game, current_player)
             game.next_player()
