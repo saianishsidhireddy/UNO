@@ -191,7 +191,7 @@ class UNOGameController:
         if action_index < 0 or action_index >= len(actions):
             print("Invalid choice")
             return self.get_action()
-        clear_output()
+        os.system('cls' if os.name == 'nt' else 'clear')
         return actions[action_index].lower()
     
     def start_new_game(self):
@@ -200,13 +200,13 @@ class UNOGameController:
         for i in range(num_players):
             name = input(f"Enter name of player {i+1}: ")
             players.append(UNOPlayer(name))
-        clear_output()
+        os.system('cls' if os.name == 'nt' else 'clear')
         starting_cards = int(input("Enter number of starting cards: "))
         score_limit_input = input("Enter score limit (leave blank for no limit): ")
         score_limit = int(score_limit_input) if score_limit_input != "" else None
         game = UNOGame(players, starting_cards=starting_cards, score_limit=score_limit)
         game.start_game()
-        clear_output()
+        os.system('cls' if os.name == 'nt' else 'clear')
         return game
     
     
@@ -352,7 +352,7 @@ class UNOGameController:
             if winner is not None:
                 self.display_winner(winner)
                 return True
-            clear_output()
+            os.system('cls' if os.name == 'nt' else 'clear')
             game.next_player()
         except Exception as e:
             print(e)
@@ -386,7 +386,7 @@ def play_game():
             result=controller.quit_game(game, current_player)
             if result==True:      
                 break
-        clear_output()
+        os.system('cls' if os.name == 'nt' else 'clear')
 
     
 play_game()
